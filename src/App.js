@@ -24,6 +24,7 @@ import TagSchool from "./Pages/TagSchool";
 import AddSchool from "./Pages/AddSchool";
 import SchoolPunchIn from "./Pages/SchoolPunchIn";
 import OrderProcessing from "./Pages/OrderProcessing";
+import DublicateOrder from "./Pages/dublicateOrder";
 // import MyDocument from "./Components/PdfDocument";
 import ManageOrder from "./Pages/ManageOrder";
 // import AOF from "./Pages/AOF";
@@ -118,6 +119,10 @@ function App() {
           <Route
             path="/manage_order"
             element={isAuth || MsAuth ? <ManageOrder /> : <Login />}
+          />
+          <Route
+            path="/dublicateOrder"
+            element={isAuth || MsAuth ? <DublicateOrder /> : <Login />}
           />
           {/* <Route
             path="/pdf_view"

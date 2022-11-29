@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 // import { Add } from "@mui/icons-material";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import DataTable from "../Components/DataTable";
 // import { rows, ManageSchoolRows } from "../DummyData";
 // import SearchDropDown from "../Components/SearchDropDown";
@@ -119,7 +119,12 @@ const ManageOrder = () => {
                   </span>
                   <span>Quantity: {item.quantity}</span>
                   <span>Amount: ₹{item.amount}</span>
-                  {/* <div className="mb-2">
+                  <Link to="/dublicateOrder">
+                    <div className="mb-2">
+                      <BasicButton text={"Duplicate"} />
+                    </div>
+                  </Link>
+                  {/* <div >
                     <BasicButton text={"Duplicate"} />
                   </div> */}
                   {/* <span>Status: {!item.sap_status && }</span> */}
