@@ -11,6 +11,8 @@ import orderImg from '../assets/img/order.png'
 import documentImg from '../assets/img/documents.png'
 import zohoImg from '../assets/img/zoho.png'
 import SwipeableTemporaryDrawer from '../Components/Material/MaterialSidebar'
+import Apk from '../Components/apk'
+
 // import { Map } from "@mui/icons-material";
 import GMap from '../assets/map.png'
 import BasicButton from '../Components/Material/Button'
@@ -171,6 +173,7 @@ const Home = () => {
               <h1 className='text-gray-100 text-2xl font-semibold absolute top-[2rem] left-[2rem]'>
                 Welcome
               </h1>
+           
               <div className='w-full flex flex-col px-4 pb-6 sm:flex-row gap-6 items-center justify-center'>
                 <section className='flex sm:w-[30%] sm:h-[19rem] w-full sm:flex-col flex-row gap-4 hover:shadow-2xl items-center justify-between px-4 py-4 bg-gray-200 rounded-md'>
                   <img
@@ -213,8 +216,21 @@ const Home = () => {
                       Documents
                     </span>
                   </section>
+                  <section className='flex grayscale w-1/2 flex-col gap-4 hover:shadow-2xl items-center justify-around px-4 py-4 bg-gray-200 rounded-md'>
+                    <img
+                      src="https://thenounproject.com/api/private/icons/3553706/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0&token=gAAAAABjhxsGZhi5gBveV06R5A8BfWO5-JHMaH2HvVxJ5Kqev-ZpVwJ7qBOzAFDROIzHOiDLpwwJvPEHrABprPhFv0ZmN6EwBw%3D%3D"
+                      className='sm:w-[14rem] w-[5rem] h-auto'
+                      alt=''
+                    />
+
+                    <span className='md:text-2xl sm:text-base text-sm font-bold'>
+                    <Apk/>
+                    </span>
+                  </section>
                 </div>
+                
               </div>
+            
               {/* <GoogleMap sidebarCollapsed={sidebarCollapsed} /> */}
               {/* <button className="px-4 py-1 bg-blue-400" onClick={handleLocation}>
             Start Day

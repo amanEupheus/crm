@@ -24,6 +24,7 @@ import { getToken } from "../util/msAuth";
 import { protectedResources } from "../util/msConfig";
 import TransitionsModal from "./Material/Model";
 
+
 const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
   const [modelOpen, setModelOpen] = useState(false);
   const [isSchoolClicked, setIsSchoolClicked] = useState(
@@ -534,6 +535,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             </span>
           </aside>
         </Link>
+        
       </div>
     </div>
   );
