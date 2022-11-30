@@ -26,6 +26,7 @@ import SchoolPunchIn from "./Pages/SchoolPunchIn";
 import OrderProcessing from "./Pages/OrderProcessing";
 // import MyDocument from "./Components/PdfDocument";
 import ManageOrder from "./Pages/ManageOrder";
+import DublicateOrder from "./Pages/dublicateOrder";
 // import AOF from "./Pages/AOF";
 import KYS from "./Pages/KYS";
 import ReleaseNote from "./Pages/ReleaseNote";
@@ -89,6 +90,11 @@ function App() {
             path="/manageSchool"
             element={isAuth || MsAuth ? <ManageSchool /> : <Login />}
           />
+           <Route
+            path="/dublicateOrder/:id"
+            element={isAuth || MsAuth ? <DublicateOrder /> : <Login />}
+          />
+
           <Route
             path="/school/tagging"
             element={isAuth || MsAuth ? <SchoolTagging /> : <Login />}

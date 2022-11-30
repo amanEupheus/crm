@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 // import { Add } from "@mui/icons-material";
-// import { Link } from "react-router-dom";
+ import { Link } from "react-router-dom";
 // import DataTable from "../Components/DataTable";
 // import { rows, ManageSchoolRows } from "../DummyData";
 // import SearchDropDown from "../Components/SearchDropDown";
@@ -112,6 +112,7 @@ const ManageOrder = () => {
                   key={index}
                   className="flex font-medium flex-col gap-4 text-gray-100 justify-center rounded-md items-start px-4 py-1 bg-slate-600"
                 >
+                <span>Order Type: {item.id}</span>
                   <span>Order Type: {item.order_type}</span>
                   <span>
                     School Name:{" "}
@@ -119,9 +120,9 @@ const ManageOrder = () => {
                   </span>
                   <span>Quantity: {item.quantity}</span>
                   <span>Amount: ₹{item.amount}</span>
-                  {/* <div className="mb-2">
-                    <BasicButton text={"Duplicate"} />
-                  </div> */}
+                  <div className="mb-2">
+                    <Link to={'/dublicateOrder/' + (item.id)}><BasicButton text={"Duplicate"} /></Link>
+                  </div>
                   {/* <span>Status: {!item.sap_status && }</span> */}
                 </div>
               );

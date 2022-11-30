@@ -15,11 +15,17 @@ import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar";
 import { protectedResources } from "../util/msConfig";
 import { getToken } from "../util/msAuth";
 import CustomizedSteppers from "../Components/Material/Stepper";
+import { useParams } from "react-router-dom";
 
 const OrderProcessing = () => {
   const [loading, setLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [highLight, setHighLight] = useState("order_pro");
+  const [orderData, setDublicateOrderData] = useState([]);
+
+  console.log(orderData)
+
+ 
   const [customerData, setCustomerData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
@@ -33,6 +39,7 @@ const OrderProcessing = () => {
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
   const sidebarRef = useRef();
 
+  const { id } = useParams();
   const show = null;
 
   const [steps, setSteps] = useState({
@@ -49,6 +56,8 @@ const OrderProcessing = () => {
   });
   const snackbarRef = useRef();
   const [rowData, setRowData] = useState([]);
+
+
 
   const formik = useFormik({
     initialValues: {
@@ -181,6 +190,9 @@ const OrderProcessing = () => {
     },
   });
 
+
+
+
   const navInfo = {
     title: "Order process",
     details: ["Home", " / Order Process"],
@@ -220,31 +232,27 @@ const OrderProcessing = () => {
   };
 
   useLayoutEffect(() => {
-    // const getCustomerData = async () => {
-    //   if (Cookies.get("ms-auth")) {
-    //     const accessToken = await getToken(
-    //       protectedResources.apiTodoList.scopes.read
-    //     );
-    //     const customerRes = await instance({
-    //       url: "sales_data/getcustomer",
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //       },
-    //     });
+    
 
-    //     setCustomerData(customerRes.data.message);
-    //   } else {
-    //     const customerRes = await instance({
-    //       url: "sales_data/getcustomer",
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `${Cookies.get("accessToken")}`,
-    //       },
-    //     });
-    //     setCustomerData(customerRes.data.message);
-    //   }
-    // };
+    const getdublicateOrder = async () => {
+      
+
+     const orderDetails = await instance({
+        url: `sales_data/get_order_detail/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("accessToken"),
+        },
+      });
+
+       setDublicateOrderData(orderDetails.data.message);
+
+       //console.log(orderDetails.data)
+      
+
+
+    };
+    
 
     const getSchoolData = async () => {
       if (Cookies.get("ms-auth")) {
@@ -325,6 +333,7 @@ const OrderProcessing = () => {
     getSchoolData();
     getSubjectData();
     getTranspoterData();
+    getdublicateOrder()
   }, []);
 
   // console.log(schoolData)
@@ -672,7 +681,7 @@ const OrderProcessing = () => {
             <div className="w-full flex flex-col gap-4 items-center mt-[7rem]">
               <CustomizedSteppers
                 activeStep={calActiceStep()}
-                steps={["Basic Details", "Contact Details", "Address Details"]}
+                steps={["Order Details", "Contact Details", "Address Details"]}
               />
               {/* step 1 */}
               {steps.step1 ? (
@@ -681,6 +690,7 @@ const OrderProcessing = () => {
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       data={[{ order_type: "Order" }, { order_type: "Sample" }]}
+                      
                       Name={"order_type"}
                       label={"Order Type"}
                       color={"rgb(243, 244, 246)"}
@@ -758,8 +768,10 @@ const OrderProcessing = () => {
                     />
 
                     <DatePicker
+                    value={orderData.delivery_date}
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       label={"Delivery Date"}
+                      
                     />
 
                     <DatePicker
@@ -771,6 +783,7 @@ const OrderProcessing = () => {
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       lable={"Order Reference"}
                       variant={"standard"}
+                      value={orderData.order_ref}
                       multiline={false}
                     />
                   </div>
