@@ -43,6 +43,10 @@ import Workshop from "./Pages/KYS/Workshop";
 import PageNotFound from "./Pages/PageNotFound";
 
 
+import Return from './Pages/RETURN/Return'
+import ReturnRequest from './Pages/RETURN/RequestReturn'
+
+
 
 function App() {
   const isAuth = useSelector((state) => state.auth.user);
@@ -166,6 +170,17 @@ function App() {
           <Route
             path="/kys/add_workshop/:id"
             element={isAuth || MsAuth ? <AddWorkShop /> : <Login />}
+          />
+
+           <Route
+            path="/return"
+            element={isAuth || MsAuth ? <Return /> : <Login />}
+          />
+
+
+           <Route
+            path="/return_request"
+            element={isAuth || MsAuth ? <ReturnRequest /> : <Login />}
           />
 
           <Route

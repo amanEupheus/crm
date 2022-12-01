@@ -540,6 +540,27 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
           </span>
         </aside>
       </Link>
+
+      <Link to="/return">
+          <aside
+            className={`px-6 py-2 flex gap-4 ${
+              highLight === "return" ? "bg-gray-500" : ""
+            } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+          >
+            <LocationCityOutlined
+              className={`${
+                highLight === "return" ? "!text-[#659DBD]" : "!text-gray-400"
+              } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+            />
+            <span
+              className={`${
+                highLight === "return" ? "text-gray-200" : "text-gray-400"
+              } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+            >
+              RETURN
+            </span>
+          </aside>
+        </Link>
       
     </Box>
   );
