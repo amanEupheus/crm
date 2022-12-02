@@ -24,7 +24,6 @@ const OrderProcessing = () => {
   const [orderData, setDublicateOrderData] = useState([]);
 
   console.log(orderData)
-
  
   const [customerData, setCustomerData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
@@ -690,12 +689,11 @@ const OrderProcessing = () => {
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       data={[{ order_type: "Order" }, { order_type: "Sample"} ]}
-                      value={`${orderData.order_type}`}
+                      value={orderData.order_type}
                       Name={"order_type"}
                       label={"Order Type"}
                       color={"rgb(243, 244, 246)"}
                     />
-
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       data={customerData}

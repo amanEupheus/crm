@@ -7,7 +7,6 @@ import Button from "../../Components/Material/Button";
 import BasicTextFields from "../../Components/Material/TextField";
 import instance from "../../Instance";
 import Cookies from "js-cookie";
-import DatePicker from "../../Components/Material/Date";
 import { Backdrop, CircularProgress, Collapse, TextField } from "@mui/material";
 import Snackbars from "../../Components/Material/SnackBar";
 import SwipeableTemporaryDrawer from "../../Components/Material/MaterialSidebar";
@@ -17,15 +16,10 @@ import { getToken } from "../../util/msAuth";
 const RequestReturn = () => {
   const [loading, setLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [highLight, setHighLight] = useState("order_pro");
+  const [highLight, setHighLight] = useState("return");
   const [customerData, setCustomerData] = useState([]);
-  const [schoolData, setSchoolData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
-  const [transpoterData, setTranspoterData] = useState([]);
   const [seriesData, setSeriesData] = useState([{ series: "", disable: true }]);
-  const [address, setAddress] = useState({ disable: true });
-  const [sAddress, setSaddress] = useState([]);
-  const [contactData, setContactData] = useState([]);
   const [open, setOpen] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
@@ -33,7 +27,7 @@ const RequestReturn = () => {
 
   const [value, setValue] = useState({
     item_quan: true,
-    total_quan: "0",
+    quantity: "0",
     total_before_tax: "0",
     total: "0",
   });
@@ -42,43 +36,20 @@ const RequestReturn = () => {
 
   const formik = useFormik({
     initialValues: {
-      order_type: "",
-      cutomer_name: "",
-      s_address: "",
-      b_address: "",
-      date: new Date(),
-      orDate: new Date(),
-      order_pref: "",
-      bp_contact_id: "",
-      school: null,
-      subject: "",
-      series: "",
+      
+      fk_bp_id: "",
       item_quan: "",
       items: [],
-      order_priority: "",
-      total_quan: value.total_quan,
-      total_before_tax: value.total_before_tax,
-      total: value.total,
-      pref_transpoter_name: "",
-      remarks: "",
+      quantity: value.quantity,
+
     },
     validate: () => {
       const errors = {};
-      if (!formik.values.order_type) {
-        errors.order_type = "Required";
+
+      if (!formik.values.fk_bp_id) {
+        errors.subject = "Required";
       }
-      // if (!formik.values.cutomer_name) {
-      //   errors.cutomer_name = "Required";
-      // }
-      if (!formik.values.date) {
-        errors.date = "Required";
-      }
-      // if (!formik.values.order_pref) {
-      //   errors.order_pref = "Required";
-      // }
-      // if (!formik.values.school) {
-      //   errors.school = "Required";
-      // }
+
       if (!formik.values.subject) {
         errors.subject = "Required";
       }
@@ -88,28 +59,11 @@ const RequestReturn = () => {
       if (!formik.values.item_quan) {
         errors.item_quan = "Required";
       }
-      // if ((formik.values.items.length = 0)) {
-      //   errors.items = "Required";
-      // }
-      if (!formik.values.order_priority) {
-        errors.order_priority = "Required";
-      }
-      if (!formik.values.total_quan) {
-        errors.total_quan = "Required";
-      }
-      if (!formik.values.total_before_tax) {
-        errors.total_before_tax = "Required";
-      }
-      if (!formik.values.total) {
-        errors.total = "Required";
-      }
-      if (!formik.values.pref_transpoter_name) {
-        errors.pref_transpoter_name = "Required";
-      }
-      if (!formik.values.remarks) {
-        errors.remarks = "Required";
-      }
 
+      if (!formik.values.quantity) {
+        errors.quantity = "Required";
+      }
+    
       if (Object.keys(errors).length > 0) {
         setSnackbarErrStatus(true);
         setErrMessage("Please Fill All The Fields");
@@ -119,7 +73,19 @@ const RequestReturn = () => {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log(values);
+     // console.log(values);
+
+     console.log(
+      {
+         
+        fk_bp_id: formik.values.fk_bp_id,
+        quantity: value.quantity,
+        items: formik.values.items.map((item) => {
+          return { fk_item_id: item.id, quantity: item.quantity };
+        }),
+      }
+
+     )
       setLoading(true);
 
       formik.values.items = formik.values.items.filter(
@@ -127,24 +93,13 @@ const RequestReturn = () => {
       );
 
       const res = await instance({
-        url: "sales_data/createorder",
+        url: "returns/create",
         method: "POST",
         data: {
-          order_type: formik.values.order_type,
-          fk_bp_id: formik.values.cutomer_name,
-          order_ref: formik.values.order_pref,
-          fk_school_id: formik.values.school,
-          bp_contact_id: formik.values.bp_contact_id,
-          ordate: formik.values.orDate,
-          delivery_date: formik.values.date,
-          order_priority: formik.values.order_priority,
-          transporter_name: formik.values.pref_transpoter_name,
-          quantity: value.total_quan,
-          amount: value.total,
-          remarks: formik.values.remarks,
-          fk_shipping_address_id: formik.values.s_address,
-          fk_billing_address_id: formik.values.b_address,
-          fk_item_id: formik.values.items.map((item) => {
+         
+          fk_bp_id: formik.values.fk_bp_id,
+          quantity: value.quantity,
+          items: formik.values.items.map((item) => {
             return { fk_item_id: item.id, quantity: item.quantity };
           }),
         },
@@ -154,7 +109,7 @@ const RequestReturn = () => {
       });
       if (res.data.status === "success") {
         setSnackbarErrStatus(false);
-        setErrMessage("Order Created SuccessFully");
+        setErrMessage("Return Created SuccessFully");
         snackbarRef.current.openSnackbar();
         setTimeout(() => {
           window.scroll({
@@ -181,86 +136,7 @@ const RequestReturn = () => {
     sidebarRef.current.openSidebar();
   };
 
-  const getCustomerData = async () => {
-    setLoading(true);
-    if (Cookies.get("ms-auth")) {
-      const accessToken = await getToken(
-        protectedResources.apiTodoList.scopes.read
-      );
-      const customerRes = await instance({
-        url: "sales_data/getcustomer",
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      setCustomerData(customerRes.data.message);
-    } else {
-      const customerRes = await instance({
-        url: "sales_data/getcustomer",
-        method: "GET",
-        headers: {
-          Authorization: `${Cookies.get("accessToken")}`,
-        },
-      });
-      setCustomerData(customerRes.data.message);
-    }
-    setLoading(false);
-  };
-
   useLayoutEffect(() => {
-    // const getCustomerData = async () => {
-    //   if (Cookies.get("ms-auth")) {
-    //     const accessToken = await getToken(
-    //       protectedResources.apiTodoList.scopes.read
-    //     );
-    //     const customerRes = await instance({
-    //       url: "sales_data/getcustomer",
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //       },
-    //     });
-
-    //     setCustomerData(customerRes.data.message);
-    //   } else {
-    //     const customerRes = await instance({
-    //       url: "sales_data/getcustomer",
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `${Cookies.get("accessToken")}`,
-    //       },
-    //     });
-    //     setCustomerData(customerRes.data.message);
-    //   }
-    // };
-
-    const getSchoolData = async () => {
-      if (Cookies.get("ms-auth")) {
-        const accessToken = await getToken(
-          protectedResources.apiTodoList.scopes.read
-        );
-        const schoolRes = await instance({
-          url: "school/get/allschools",
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setSchoolData(schoolRes.data.message);
-      } else {
-        const schoolRes = await instance({
-          url: "school/get/allschools",
-          method: "GET",
-          headers: {
-            Authorization: `${Cookies.get("accessToken")}`,
-          },
-        });
-        // console.log(schoolRes.data.message)
-        setSchoolData(schoolRes.data.message);
-      }
-    };
     const getSubjectData = async () => {
       if (Cookies.get("ms-auth")) {
         const accessToken = await getToken(
@@ -286,83 +162,13 @@ const RequestReturn = () => {
       }
     };
 
-    const getTranspoterData = async () => {
-      if (Cookies.get("ms-auth")) {
-        const accessToken = await getToken(
-          protectedResources.apiTodoList.scopes.read
-        );
-        const transpoterRes = await instance({
-          url: "transporter/get",
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setTranspoterData(transpoterRes.data.message);
-      } else {
-        const transpoterRes = await instance({
-          url: "transporter/get",
-          method: "GET",
-          headers: {
-            Authorization: Cookies.get("accessToken"),
-          },
-        });
-        setTranspoterData(transpoterRes.data.message);
-      }
-    };
-
-    // getCustomerData();
-    getSchoolData();
     getSubjectData();
-    getTranspoterData();
+    getSampleCustomers();
   }, []);
 
   // console.log(schoolData)
 
-  const getCustomerAddress = async (id) => {
-    setLoading(true);
-    const addressRes = await instance({
-      url: `sales_data/getcustomer/${id}`,
-      method: "GET",
-      headers: {
-        Authorization: Cookies.get("accessToken"),
-      },
-    });
-    // console.log(addressRes.data.message)
-    setAddress({
-      billing: JSON.parse(
-        JSON.stringify(addressRes.data.message[0].bp_addresses[0])
-      ),
-    });
 
-    const addressRes2 = await instance({
-      url: `sales_data/getcustomer/shipping/${id}`,
-      method: "GET",
-      headers: {
-        Authorization: Cookies.get("accessToken"),
-      },
-    });
-    // console.log(.data)
-    setSaddress({
-      shipping: JSON.parse(
-        JSON.stringify(addressRes2.data.message[0].bp_addresses)
-      ),
-    });
-
-    setLoading(false);
-  };
-  // console.log(schoolData)
-
-  const GetContactRes = async (id) => {
-    const res = await instance({
-      url: `sales_data/get/customer/contact/${id}`,
-      method: "GET",
-      headers: {
-        Authorization: Cookies.get("accessToken"),
-      },
-    });
-    setContactData(res.data.message);
-  };
 
   const getSeriesData = async (id) => {
     setLoading(true);
@@ -408,7 +214,7 @@ const RequestReturn = () => {
     });
     setValue({
       item_quan: false,
-      total_quan: calValues("total_quan"),
+      quantity: calValues("quantity"),
       total: calValues("total_after_tax"),
       total_before_tax: calValues("total_before_tax"),
     });
@@ -433,7 +239,7 @@ const RequestReturn = () => {
   const getSampleCustomers = async () => {
     setLoading(true);
     const customer = await instance({
-      url: "sales_data/get/sample_customer",
+      url: "/sales_data/get_all_bps",
       method: "GET",
       headers: {
         Authorization: Cookies.get("accessToken"),
@@ -445,35 +251,9 @@ const RequestReturn = () => {
 
   const handleOrderProcessingForm = async (value, type) => {
     switch (type) {
-      case "order_type":
-        if (value.order_type === "Sample") {
-          getSampleCustomers();
-        } else {
-          getCustomerData();
-        }
-        formik.values.order_type = value.order_type;
-        break;
       case "customer_name":
-        // console.log(value)
-        getCustomerAddress(value.id);
-        // getShippingAddress(value.id)
-        GetContactRes(value.id);
-        formik.values.cutomer_name = value.id;
-        break;
-      case "pref_transpoter":
-        formik.values.pref_transpoter_name = value.id;
-        break;
-      case "Delivery Date":
-        formik.values.date = handleDate(value.toString());
-        break;
-      case "contact_id":
-        formik.values.bp_contact_id = value.id;
-        break;
-      case "OR Date":
-        formik.values.orDate = handleDate(value.toString());
-        break;
-      case "Order Reference":
-        formik.values.order_pref = value;
+        getSampleCustomers();
+        formik.values.fk_bp_id = value.id;
         break;
       case "school_name":
         formik.values.school = value.id;
@@ -494,27 +274,6 @@ const RequestReturn = () => {
           getListData(formik.values.series.id);
         }
         break;
-      case "order_priority":
-        formik.values.order_priority = value.order_priority;
-        break;
-      case "shipping_address":
-        formik.values.s_address = value.id;
-        break;
-      case "billing_address":
-        formik.values.b_address = value.id;
-        break;
-      case "Total Quantity":
-        formik.values.total_quan = value;
-        break;
-      case "Total Before Tax":
-        formik.values.total_before_tax = value;
-        break;
-      case "Total":
-        formik.values.total = value;
-        break;
-      // case "Preffered Transpoter Name":
-      //   formik.values.pref_transpoter_name = value;
-      //   break;
       case "Remarks":
         formik.values.remarks = value;
         break;
@@ -522,12 +281,11 @@ const RequestReturn = () => {
       default:
         break;
     }
-    console.log(formik.values);
   };
   // console.log(address);
 
   const calValues = (type) => {
-    if (type === "total_quan") {
+    if (type === "quantity") {
       let total = 0;
       formik.values.items.map((item) => {
         total = total + Number(item.quantity);
@@ -576,10 +334,10 @@ const RequestReturn = () => {
       tax: formik.values.items[index].tax,
       discount: formik.values.items[index].discount,
     };
-    console.log(formik.values.items);
+    //console.log(formik.values.items);
     setValue({
       item_quan: false,
-      total_quan: calValues("total_quan"),
+      quantity: calValues("quantity"),
       total: calValues("total_after_tax"),
       total_before_tax: calValues("total_before_tax"),
     });
@@ -642,7 +400,7 @@ const RequestReturn = () => {
               className="flex flex-col gap-[2rem] sm:px-6 px-4 py-6 bg-slate-600 rounded-md"
             >
               <section
-                className={`grid grid-cols-1 grid-rows-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 lg:grid-rows-3 md:grid-rows-4 sm:grid-rows-5 bg-slate-600 rounded-md`}
+                className={`grid grid-cols-1 grid-rows-10 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-8 lg:grid-rows-2 md:grid-rows-2 sm:grid-rows-2 bg-slate-600 rounded-md`}
               >
                 <div className=" flex flex-col gap-2 w-full">
                   {/* <label className="text-gray-100">Customer Name</label> */}
@@ -651,7 +409,6 @@ const RequestReturn = () => {
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     data={customerData}
                     Name="customer_name"
-                    disable={!formik.values.order_type}
                     label={"Customer Name"}
                     color={"rgb(243, 244, 246)"}
                   />
@@ -729,7 +486,7 @@ const RequestReturn = () => {
                   })}
                 </section>
               </Collapse>
-              <div className="grid grid-cols-1 grid-rows-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 lg:grid-rows-1 md:grid-rows-2 sm:grid-rows-3 bg-slate-600 rounded-md">
+              <div className="grid grid-cols-1 grid-rows-1 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 gap-8 lg:grid-rows-1 md:grid-rows-2 sm:grid-rows-3 bg-slate-600 rounded-md">
                 
                 <div className=" flex flex-col gap-2 w-full">
                   {/* <label className="text-gray-100">Total Quantity</label> */}
@@ -738,15 +495,12 @@ const RequestReturn = () => {
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     lable={"Total Quantity"}
                     readOnly={true}
-                    defaultValue={value.total_quan}
-                    value={value.total_quan}
+                    defaultValue={value.quantity}
+                    value={value.quantity}
                     variant={"standard"}
                     multiline={false}
                   />
                 </div>
-               
-              </div>
-              <div className="flex sm:flex-row flex-col items-center gap-[2rem] justify-between">
                 <div className=" flex flex-col gap-2 w-full md:col-span-2">
                   {/* <label className="text-gray-100">Remarks</label> */}
 
@@ -757,7 +511,9 @@ const RequestReturn = () => {
                     multiline={true}
                   />
                 </div>
+               
               </div>
+             
               <div onClick={formik.handleSubmit}>
                 <Button text={"Return"} />
               </div>
