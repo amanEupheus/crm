@@ -4,7 +4,6 @@ import Navbar from "../../Components/Navbar";
 import Sidebar from "../../Components/Sidebar";
 import { Link } from "react-router-dom";
 import DataTable from "../../Components/DataTable";
-import SearchDropDown from "../../Components/SearchDropDown";
 import SwipeableTemporaryDrawer from "../../Components/Material/MaterialSidebar";
 import instance from "../../Instance";
 import { useLayoutEffect } from "react";
@@ -14,12 +13,9 @@ import { Backdrop, CircularProgress } from "@mui/material";
 
 const Return = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [highLight, setHighLight] = useState("RETURN");
+  const [highLight] = useState("Return");
   const [loading, setLoading] = useState(false);
-  const [stateAndCity, setStateAndCity] = useState({ state: "", city: "" });
   const sidebarRef = useRef();
-  const [states, setStates] = useState([]);
-  const [city, setCity] = useState({ disable: true });
   const [schoolRow, setSchoolRow] = useState([]);
   const navInfo = {
     title: "Return Order",
@@ -27,18 +23,19 @@ const Return = () => {
   };
 
   const Tablecolumns = [
-    { field: "SchoolName", headerName: "School Name", width: 300 },
+    { field: "Customer", headerName: "Customer name", width: 300 },
     {
-      field: "State",
-      headerName: "State",
+      field: "Quantity",
+      headerName: "Quantity",
       width: 120,
     },
     {
-      field: "Address",
-      headerName: "Address",
+      field: "Item_name",
+      headerName: "Item name",
       width: 400,
     },
   ];
+
 
   const handleSidebarCollapsed = () => {
     sidebarRef.current.openSidebar();
@@ -60,113 +57,35 @@ const Return = () => {
     };
   }, []);
 
-  const getSchool = async (stateId, cityId) => {
-    setLoading(true);
-    const res = await instance({
-      url: `school/${stateId}/${cityId}`,
-      method: "GET",
-      headers: {
-        Authorization: `${Cookies.get("accessToken")}`,
-      },
-    });
-    console.log(res.data.message);
-    const rows = res.data.message.map((item, index) => {
-      return {
-        id: item.id,
-        SchoolName: item.school_name,
-        State: item.school_addresses[0].fk_state.state,
-        Address: item.school_addresses[0].address,
-      };
-    });
-    setSchoolRow(rows);
-    setLoading(false);
-  };
-
-  const getSchoolByState = async (id) => {
-    setLoading(true);
-
-    const res = await instance({
-      url: `school/${id}`,
-      method: "GET",
-      headers: {
-        Authorization: `${Cookies.get("accessToken")}`,
-      },
-    });
-    const rows = res.data.message.map((item, index) => {
-      return {
-        id: item.id,
-        SchoolName: item.school_name,
-        State: item.school_addresses[0].fk_state.state,
-        Address: item.school_addresses[0].address,
-      };
-    });
-    setSchoolRow(rows);
-    setLoading(false);
-  };
-
-  const handleOrderProcessingForm = async (value, type) => {
-    switch (type) {
-      case "select_state":
-        getCity(value.fk_state_id);
-        getSchoolByState(value.fk_state_id);
-        setStateAndCity({ ...stateAndCity, state: value.fk_state_id });
-        break;
-      case "select_city":
-        setStateAndCity({ ...stateAndCity, city: value.id });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const getCity = async (Id) => {
-    setLoading(true);
-    const res = await instance({
-      url: `location/city/${Id}`,
-      method: "GET",
-      headers: {
-        Authorization: `${Cookies.get("accessToken")}`,
-      },
-    });
-    setCity(res.data.message);
-    setLoading(false);
-  };
 
   useLayoutEffect(() => {
-    const getStates = async () => {
+
+    const getReturnData = async () => {
+      setLoading(true)
       const res = await instance({
-        url: "location/state/get/states",
+        url: "returns/getreturns",
         method: "GET",
         headers: {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
-
-      setStates(res.data.message);
-    };
-
-    const getSchoolData = async () => {
-      const res = await instance({
-        url: "school/b4c27059-8c42-4d35-8fe7-8dedffbfe641/294de4f3-0977-4482-b0de-2cfeaa827ba4",
-        method: "GET",
-        headers: {
-          Authorization: `${Cookies.get("accessToken")}`,
-        },
-      });
-      // console.log(res.data.message);
+      //  console.log(res.data.message)
+       
       const rows = res.data.message.map((item, index) => {
         return {
           id: item.id,
-          SchoolName: item.school_name,
-          State: item.school_addresses[0].fk_state.state,
-          Address: item.school_addresses[0].address,
+          Customer: item.fk_bp.bp_name,
+          Quantity: item.quantity,
+          Item_name: item.returns_items[0].fk_item.item_name
         };
       });
+      
       setSchoolRow(rows);
+      setLoading(false)
+      
     };
-    getStates();
 
-    getSchoolData();
+    getReturnData();
   }, []);
 
   return (
@@ -199,20 +118,21 @@ const Return = () => {
         />
         <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
-            <div className="grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 py-3 mt-6 gap-6 rounded-md bg-slate-600">
-              <div className="flex flex-col gap-3 w-full md:w-[20vw]">
+            <div className="grid grid-cols-2 grid-rows-0  md:flex md:justify-between sm:justify-between md:items-center sm:items-center px-6 mb-8 py-3 gap-6 rounded-md bg-slate-600">
+
+              <h1 className="text-gray-100">RETURN</h1>
+             
               <Link to="/return_request">
                 <BasicButton text={"Request Return"} />
               </Link>
-               
-              </div>
+             
             </div>
 
             <DataTable
               rows={schoolRow}
               checkbox={false}
               Tablecolumns={Tablecolumns}
-              tableName="ManageSchool"
+              tableName="ReturnOrder"
             />
           </div>
         </div>

@@ -94,6 +94,14 @@ export default function DataTable({
             row?.Address?.toLowerCase().indexOf(q) > -1
           );
           break;
+          case "ReturnOrder":
+          return (
+            row?.Customer?.toLowerCase().indexOf(q) > -1 ||
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
+            row?.Item_name?.toLowerCase().indexOf(q) > -1
+          );
+          break;
         default:
           break;
       }

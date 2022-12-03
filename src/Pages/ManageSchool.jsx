@@ -164,6 +164,7 @@ const ManageSchool = () => {
           Address: item.school_addresses[0].address,
         };
       });
+      console.log(rows)
       setSchoolRow(rows);
     };
     getStates();

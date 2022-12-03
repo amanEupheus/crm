@@ -12,6 +12,8 @@ import Snackbars from "../../Components/Material/SnackBar";
 import SwipeableTemporaryDrawer from "../../Components/Material/MaterialSidebar";
 import { protectedResources } from "../../util/msConfig";
 import { getToken } from "../../util/msAuth";
+import { useNavigate } from "react-router-dom";
+
 
 const RequestReturn = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +26,8 @@ const RequestReturn = () => {
   const [errMessage, setErrMessage] = useState("");
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
   const sidebarRef = useRef();
+  const navigate = useNavigate()
+
 
   const [value, setValue] = useState({
     item_quan: true,
@@ -31,6 +35,8 @@ const RequestReturn = () => {
     total_before_tax: "0",
     total: "0",
   });
+
+  
   const snackbarRef = useRef();
   const [rowData, setRowData] = useState([]);
 
@@ -112,17 +118,13 @@ const RequestReturn = () => {
         setErrMessage("Return Created SuccessFully");
         snackbarRef.current.openSnackbar();
         setTimeout(() => {
-          window.scroll({
-            top: 0,
-            // behavior: "smooth",
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 100);
+          navigate('/')
         }, 1500);
       }
       setLoading(false);
-      setOpen(true);
+      setOpen(true)
+      
+      
     },
   });
 
@@ -220,14 +222,6 @@ const RequestReturn = () => {
     });
     setLoading(false);
     setOpen(true);
-  };
-
-  const handleDate = (date) => {
-    let modifiedDate = `${date.split(" ")[1]} ${date.split(" ")[2]} ${
-      date.split(" ")[3]
-    }`;
-
-    return modifiedDate;
   };
 
   const conditionalGetList = (id) => {
