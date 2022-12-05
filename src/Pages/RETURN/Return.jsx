@@ -30,8 +30,8 @@ const Return = () => {
       width: 120,
     },
     {
-      field: "Item_name",
-      headerName: "Item name",
+      field: "Status",
+      headerName: "Status",
       width: 400,
     },
   ];
@@ -76,7 +76,7 @@ const Return = () => {
           id: item.id,
           Customer: item.fk_bp.bp_name,
           Quantity: item.quantity,
-          Item_name: item.returns_items[0].fk_item.item_name
+          // Item_name: item.returns_items[0].fk_item.item_name
         };
       });
       

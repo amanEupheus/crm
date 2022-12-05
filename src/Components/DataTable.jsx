@@ -99,7 +99,7 @@ export default function DataTable({
             row?.Customer?.toLowerCase().indexOf(q) > -1 ||
             // row.City.toLowerCase().indexOf(q) > -1 ||
             row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
-            row?.Item_name?.toLowerCase().indexOf(q) > -1
+            row?.Status?.toLowerCase().indexOf(q) > -1
           );
           break;
         default:

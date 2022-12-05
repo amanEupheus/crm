@@ -9,7 +9,7 @@ import BasicTextFields from "../Components/Material/TextField";
 import instance from "../Instance";
 import Cookies from "js-cookie";
 import DatePicker from "../Components/Material/Date";
-import { Backdrop, CircularProgress, Collapse, TextField } from "@mui/material";
+import {Autocomplete, Backdrop, CircularProgress, Collapse, TextField } from "@mui/material";
 import Snackbars from "../Components/Material/SnackBar";
 import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar";
 import { protectedResources } from "../util/msConfig";
@@ -685,13 +685,23 @@ const OrderProcessing = () => {
               {steps.step1 ? ( 
                 <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                   <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      data={[{ order_type: "Order" }, { order_type: "Sample"} ]}
-                      value={orderData.order_type}
-                      Name={"order_type"}
-                      label={"Order Type"}
-                      color={"rgb(243, 244, 246)"}
+                  <Autocomplete
+                      Value={orderData.order_type}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "order_type");
+                      }}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Order Type *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
                     />
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
