@@ -193,8 +193,8 @@ const OrderProcessing = () => {
 
 
   const navInfo = {
-    title: "Order process",
-    details: ["Home", " / Order Process"],
+    title: "Duplicate Order",
+    details: ["Home", " / Duplicate Order"],
   };
 
   const handleSidebarCollapsed = () => {
@@ -675,8 +675,7 @@ const OrderProcessing = () => {
 
           <div className="min-h-[90vh] relative flex w-full justify-center items-start gap-4 bg-[#141728]">
             <h1 className="text-gray-100 md:text-2xl text-base font-semibold absolute top-[2rem] left-[2rem]">
-              Create New Order
-            </h1>
+              Create Duplicate Order            </h1>
             <div className="w-full flex flex-col gap-4 items-center mt-[7rem]">
               <CustomizedSteppers
                 activeStep={calActiceStep()}

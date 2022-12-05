@@ -13,7 +13,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 
 const Return = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [highLight] = useState("Return");
+  const [highLight] = useState("return");
   const [loading, setLoading] = useState(false);
   const sidebarRef = useRef();
   const [schoolRow, setSchoolRow] = useState([]);
