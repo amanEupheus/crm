@@ -21,7 +21,14 @@ const OrderProcessing = () => {
   const [loading, setLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [highLight, setHighLight] = useState("order_pro");
-  const [orderData, setDublicateOrderData] = useState([]);
+  const [orderData, setDublicateOrderData] = useState({
+    order_type: "", 
+    fk_bp: "",
+    order_processing_addresses:"",
+    fk_school:"",
+    bp_contact:"",
+    delivery_date:"",
+    order_processing_items:"",});
 
   console.log(orderData)
  
@@ -182,7 +189,7 @@ const OrderProcessing = () => {
           setTimeout(() => {
             window.location.reload();
           }, 100);
-        }, 1500);
+        }, 1400);
       }
       setLoading(false);
       setOpen(true);
@@ -659,7 +666,7 @@ const OrderProcessing = () => {
           />
         </div>
         <div
-          className={`flex flex-col w-[100vw] relative transition-all ease-linear duration-300 lg:w-[83vw] lg:ml-[18vw] ${
+          className={`flex flex-col w-[100vw] relative transition-all ease-linear duration-400 lg:w-[83vw] lg:ml-[18vw] ${
             window.innerWidth < 1024 ? null : "md:ml-[30vw] ml-[85vw]"
           } `}
         >
@@ -686,12 +693,12 @@ const OrderProcessing = () => {
                 <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                   <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
                   <Autocomplete
-                      Value={orderData.order_type}
+                      value={orderData?.order_type}
                       options={['Order', 'Sample']}
                       onChange={(event, newValue) => {
                         handleOrderProcessingForm(newValue, "order_type");
                       }}
-                      sx={{ width: 200 }}
+                      sx={{ width: 400 }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -702,33 +709,90 @@ const OrderProcessing = () => {
                           }}
                         />
                       )}
-                    />
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      data={customerData}
-                      Name="customer_name"
-                      disable={!formik.values.order_type}
-                      label={"Customer Name"}
-                      color={"rgb(243, 244, 246)"}
-                    />
+                    />                                                                                             
+                    <Autocomplete
+                      value={orderData?.fk_bp}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "Customer_name");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Customer name *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    />  
 
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      disable={address.disable}
-                      data={sAddress.shipping}
-                      Name={"shipping_address"}
-                      label={"Shipping Address"}
-                      color={"rgb(243, 244, 246)"}or
-                    />
+                    <Autocomplete
+                      value={orderData?.order_processing_addresses}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "shipping_address");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Shipping Address *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    />  
 
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      disable={address.disable}
-                      data={[address.billing]}
-                      Name={"billing_address"}
-                      label={"Billing Address"}
-                      color={"rgb(243, 244, 246)"}
-                    />
+                    <Autocomplete
+                      value={orderData?.order_processing_addresses}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "billing Address");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Billing Address *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    />  
+
+
+                    <Autocomplete
+                      value={orderData?.bp_contact}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "billing Address");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select Contact *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    />  
+
+
+                    
+
+
+
+
                   </div>
                   <div
                     className="mt-3"
@@ -759,23 +823,10 @@ const OrderProcessing = () => {
               {steps.step2 ? (
                 <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                   <div className="grid sm:grid-rows-2 sm:grid-cols-3 grid-rows-5 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      disable={address.disable}
-                      data={contactData}
-                      Name={"contact_id"}
-                      label={"Select Contact"}
-                      color={"rgb(243, 244, 246)"}
-                    />
-                    <BasicTextFields
-                      lable={"Enter Email"}
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      variant={"standard"}
-                      multiline={false}
-                    />
+                    
 
                     <DatePicker
-                    value={orderData.delivery_date}
+                    value={orderData?.delivery_date}
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       label={"Delivery Date"}
                       
@@ -793,6 +844,26 @@ const OrderProcessing = () => {
                       value={orderData.order_ref}
                       multiline={false}
                     />
+
+                     <Autocomplete
+                      value={orderData?.fk_school.school_name}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "select_school");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select School *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    /> 
+
                   </div>
 
                   <div
@@ -824,15 +895,38 @@ const OrderProcessing = () => {
               ) : null}
               {/* step 3 */}
               {steps.step3 ? (
-                <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
-                  <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      data={schoolData}
-                      Name={"school_name"}
-                      label={"Select School"}
-                      color={"rgb(243, 244, 246)"}
-                    />
+                <div className="flex flex-col gap-0 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
+                  <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600"> 
+
+                  <section className="bg-white px-3 py-2 rounded-md w-full h-[15rem] overflow-auto sm:grid sm:grid-cols-2 flex flex-col gap-2 col-span-4">
+                      {orderData?.order_processing_items.map((item, index) => {
+                        return (
+                          <div
+                            key={item.id}
+                            className="flex flex-col rounded-md text-xs gap-1 px-4 py-2 bg-slate-400 text-slate-700 font-bold"
+                          >
+                            <span>Item Name: {item.fk_item.item_name}</span>
+                            <span>Item Code: {item.fk_item.item_code}</span>
+                            <span>Price: {item.fk_item.price}</span>
+                            <span>series: {item.fk_item.fk_sery.series}</span>
+                            <span>subject: {item.fk_item.fk_subject.subject}</span>
+                            <span>
+                              Quantity:{"   "}
+                              <input
+                                type="text"
+                                onChange={(e) =>
+                                  alterItemQuantity(index, e.target.value)
+                                }
+                                defaultValue={item.quantity}
+                                placeholder="Enter Quantity"
+                                className="px-4 py-2 font-bold rounded-md sm:w-[30%] w-[70%] outline-none"
+                              />
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </section>
+
 
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
@@ -873,7 +967,7 @@ const OrderProcessing = () => {
                         return (
                           <div
                             key={item.id}
-                            className="flex flex-col rounded-md text-xs gap-1 px-4 py-2 bg-slate-300 text-slate-700 font-bold"
+                            className="flex flex-col rounded-md text-xs gap-1 px-4 py-2 bg-slate-400 text-slate-700 font-bold"
                           >
                             <span>Item Name: {item.item_name}</span>
                             <span>Item Code: {item.item_code}</span>
@@ -941,13 +1035,25 @@ const OrderProcessing = () => {
                         multiline={false}
                       />
 
-                      <SearchDropDown
-                        handleOrderProcessingForm={handleOrderProcessingForm}
-                        data={transpoterData}
-                        label={"Preffered Transpoter Name"}
-                        Name={"pref_transpoter"}
-                        color={"rgb(243, 244, 246)"}
-                      />
+                      <Autocomplete
+                        value={orderData?.transporter_name_pref_transporter.name}
+                      options={['Order', 'Sample']}
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "select_school");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={"Preffered Transpoter Name"}
+                          Name={"pref_transpoter"}
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    />
 
                       <BasicTextFields
                         handleOrderProcessingForm={handleOrderProcessingForm}
