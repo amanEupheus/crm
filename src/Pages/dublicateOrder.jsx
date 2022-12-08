@@ -28,7 +28,11 @@ const OrderProcessing = () => {
     fk_school:"",
     bp_contact:"",
     delivery_date:"",
-    order_processing_items:"",});
+    order_processing_items:"",
+    quantity: "",
+    amount:"",
+    order_priority:"",});
+
 
   console.log(orderData)
  
@@ -714,7 +718,7 @@ const OrderProcessing = () => {
                       value={orderData?.fk_bp}
                       options={['Order', 'Sample']}
                       onChange={(event, newValue) => {
-                        handleOrderProcessingForm(newValue, "Customer_name");
+                        handleOrderProcessingForm(newValue, "customer_name");
                       }}
                       sx={{ width: 400 }}
                       renderInput={(params) => (
@@ -728,6 +732,10 @@ const OrderProcessing = () => {
                         />
                       )}
                     />  
+
+                    {
+                      console.log(orderData.fk_bp.bp_name)
+                    }
 
                     <Autocomplete
                       value={orderData?.order_processing_addresses}
@@ -993,24 +1001,38 @@ const OrderProcessing = () => {
                   </Collapse>
                   <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                     <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
-                      <SearchDropDown
-                        handleOrderProcessingForm={handleOrderProcessingForm}
-                        data={[
+                      
+
+                       <Autocomplete
+                      value={orderData?.order_priority}
+                      options={[
                           { order_priority: "Low" },
                           { order_priority: "Medium" },
                           { order_priority: "High" },
                         ]}
-                        label={"Order Priority"}
-                        Name={"order_priority"}
-                        color={"rgb(243, 244, 246)"}
-                      />
+                      onChange={(event, newValue) => {
+                        handleOrderProcessingForm(newValue, "order_priority");
+                      }}
+                      sx={{ width: 400 }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select School *"
+                          variant="standard"
+                          InputLabelProps={{
+                            style: { color: "rgb(243, 244, 246)" },
+                          }}
+                        />
+                      )}
+                    /> 
 
                       <BasicTextFields
                         handleOrderProcessingForm={handleOrderProcessingForm}
                         lable={"Total Quantity"}
                         readOnly={true}
+                        value={orderData?.quantity + value.total_quan}
                         defaultValue={value.total_quan}
-                        value={value.total_quan}
+                        // value={value.total_quan}
                         variant={"standard"}
                         multiline={false}
                       />
@@ -1030,7 +1052,8 @@ const OrderProcessing = () => {
                         lable={"Total"}
                         readOnly={true}
                         defaultValue={Math.round(value.total)}
-                        value={Math.round(value.total)}
+                       // value={Math.round(value.total)}
+                       value={orderData?.amount + Math.round(value.total)}
                         variant={"standard"}
                         multiline={false}
                       />
@@ -1058,6 +1081,7 @@ const OrderProcessing = () => {
                       <BasicTextFields
                         handleOrderProcessingForm={handleOrderProcessingForm}
                         lable={"Remarks"}
+                        value={orderData?.remarks}
                         //   variant={"standard"}
                         multiline={true}
                       />

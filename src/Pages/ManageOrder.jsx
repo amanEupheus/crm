@@ -112,7 +112,7 @@ const ManageOrder = () => {
                   key={index}
                   className="flex font-medium flex-col gap-4 text-gray-100 justify-center rounded-md items-start px-4 py-1 bg-slate-600"
                 >
-                <span>Order Type: {item.id}</span>
+                {/* <span>Order Type: {item.id}</span> */}
                   <span>Order Type: {item.order_type}</span>
                   <span>
                     School Name:{" "}
