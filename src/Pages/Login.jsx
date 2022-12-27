@@ -76,10 +76,11 @@ const Login = () => {
     if (res.data.id && res.data.accessToken) {
       Cookies.set(
         "user",
-        `id: ${res.data.id}, accessToken: ${res.data.accessToken}`
+        `id: ${res.data.id}, accessToken: ${res.data.accessToken}, type: ${res.data.type}`
       );
       Cookies.set("id", `${res.data.id}`);
       Cookies.set("accessToken", `${res.data.accessToken}`);
+      Cookies.set("type", `${res.data.type}`);
       if (res.data.admin) {
         Cookies.set("admin", true);
         dispatch(authActions.adminLogin());

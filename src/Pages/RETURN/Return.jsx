@@ -23,16 +23,16 @@ const Return = () => {
   };
 
   const Tablecolumns = [
-    { field: "Customer", headerName: "Customer name", width: 300 },
+    { field: "Customer", headerName: "Customer name", width: 450 },
     {
       field: "Quantity",
       headerName: "Quantity",
-      width: 120,
+      width: 200,
     },
     {
       field: "Status",
       headerName: "Status",
-      width: 400,
+      width: 300,
     },
   ];
 
@@ -69,7 +69,7 @@ const Return = () => {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
-      //  console.log(res.data.message)
+       console.log(res.data.message)
        
       const rows = res.data.message.map((item, index) => {
         return {

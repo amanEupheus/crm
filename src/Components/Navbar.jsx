@@ -48,6 +48,7 @@ const Navbar = ({ handleSidebarCollapsed, info }) => {
     Cookies.remove("user");
     Cookies.remove("id");
     Cookies.remove("ms-auth");
+    Cookies.remove("type");
     dispatch(authActions.logout());
   };
 

@@ -118,7 +118,7 @@ const RequestReturn = () => {
         setErrMessage("Return Created SuccessFully");
         snackbarRef.current.openSnackbar();
         setTimeout(() => {
-          navigate('/')
+          navigate('/return')
         }, 1500);
       }
       setLoading(false);
